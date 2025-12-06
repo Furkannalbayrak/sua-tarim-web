@@ -13,8 +13,8 @@ export default function MobileNav() {
   const routes = [
     { href: "/", label: "Anasayfa" },
     { href: "/products", label: "Ürünler" },
-    { href: "/about", label: "Hakkımızda" },
-    { href: "/contact", label: "İletişim" },
+    { href: "/#about", label: "Hakkımızda" },
+    { href: "/#contact", label: "İletişim" },
   ];
 
   return (
