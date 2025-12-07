@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types";
-import { Plus, Scale, Minus, ShoppingBasket, ShoppingCart } from "lucide-react";
+import { Plus, Scale, Minus, ShoppingBasket, ShoppingCart, X } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -13,6 +13,7 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 import { useCartStore } from '@/lib/store';
+import Link from 'next/link';
 
 // Örnek Veriler (Aynı kalacak)
 const POPULAR_PRODUCTS: Product[] = [
@@ -113,7 +114,7 @@ export default function PopularProducts() {
   };
 
   return (
-    <section className="py-20 bg-stone-50">
+    <section className="py-20 px-2 bg-stone-50">
       <div className="container mx-auto px-4 md:px-10 max-w-7xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold text-stone-900 mb-4 tracking-tight">
@@ -170,7 +171,7 @@ export default function PopularProducts() {
                     onClick={() => handleOpenProduct(product)}
                   >
                     <Scale className="h-5 w-5 text-stone-600 group-hover/btn:text-white transition-colors" />
-                    <span>Miktar Seç</span>
+                    <span>Seç</span>
                   </Button>
                 </div>
               </div>
@@ -179,12 +180,143 @@ export default function PopularProducts() {
         </div>
 
         <div className="text-center mt-16">
-          <Button variant="outline" size="lg" className="border-stone-400 text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 px-10 py-6 text-lg rounded-full transition-all duration-300">
-            <ShoppingBasket className="mr-2 h-5 w-5" />
-            Tüm Ürünleri İncele
-          </Button>
+          <Link href={'/products'}>
+            <Button variant="outline" size="lg" className="border-stone-400 text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 px-10 py-6 text-lg rounded-full transition-all duration-300">
+              <ShoppingBasket className="mr-2 h-5 w-5" />
+              Tüm Ürünleri İncele
+            </Button>
+          </Link>
         </div>
       </div>
+
+
+      <Sheet open={!!selectedProduct} onOpenChange={(open) => !open && setSelectedProduct(null)}>
+        <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto bg-white p-0 border-l-stone-200">
+          {selectedProduct && (
+            <div className="flex flex-col h-full">
+              {/* Panel Başlığı ve Resim */}
+              <div className="relative h-64 w-full shrink-0">
+                <img
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
+                {/* ÖZEL KAPATMA BUTONU */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-4 right-4 bg-black/50 text-white rounded-full h-10 w-10 z-10 backdrop-blur-sm border border-white/20"
+                  onClick={() => setSelectedProduct(null)}
+                >
+                  <X className="h-6 w-6" />
+                </Button>
+
+                <div className="absolute bottom-4 left-6 right-6 text-white">
+                  <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded mb-2 inline-block">
+                    {selectedProduct.category}
+                  </span>
+                  <SheetTitle className="text-3xl font-bold text-white">{selectedProduct.name}</SheetTitle>
+                </div>
+              </div>
+
+              {/* Panel İçeriği */}
+              <div className="flex-1 p-6 space-y-8">
+                <SheetDescription className="text-stone-600 text-base">
+                  {selectedProduct.description}
+                </SheetDescription>
+
+                {/* Miktar Seçim Alanı */}
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-stone-900 flex items-center gap-2">
+                    <Scale className="h-4 w-4" />
+                    Miktar Belirle
+                  </h4>
+
+                  {/* Hızlı Seçim Butonları (Sadece KG ürünleri için) */}
+                  {selectedProduct.unit === 'kg' && (
+                    <div className="grid grid-cols-3 gap-3">
+                      {[250, 500, 1000].map((val) => (
+                        <Button
+                          key={val}
+                          variant={quantity === val ? "default" : "outline"}
+                          onClick={() => setFixedQuantity(val)}
+                          className={`h-10 ${quantity === val ? "bg-stone-900 hover:bg-stone-800" : "border-stone-300 text-stone-600"}`}
+                        >
+                          {val >= 1000 ? '1 Kg' : `${val}g`}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Manuel Artır/Azalt Kontrolü */}
+                  <div className="flex items-center justify-between bg-stone-100 rounded-xl p-2 border border-stone-200">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={decrementQuantity}
+                      className="h-12 w-12 rounded-lg hover:bg-white hover:shadow-sm"
+                    >
+                      <Minus className="h-5 w-5 text-stone-600" />
+                    </Button>
+
+                    <div className="text-center">
+                      <span className="text-2xl font-bold text-stone-900 block">
+                        {selectedProduct.unit === 'kg' ? `${quantity}g` : quantity}
+                      </span>
+                      {selectedProduct.unit === 'kg' && (
+                        <span className="text-xs text-stone-500 font-medium">
+                          {(quantity / 1000).toFixed(2)} kg
+                        </span>
+                      )}
+                    </div>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={incrementQuantity}
+                      className="h-12 w-12 rounded-lg hover:bg-white hover:shadow-sm"
+                    >
+                      <Plus className="h-5 w-5 text-stone-600" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Not Ekleme Alanı (Opsiyonel - Şimdilik Görsel) */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-stone-900">Kasap Notu (İsteğe Bağlı)</label>
+                  <textarea
+                    className="w-full min-h-[80px] p-3 rounded-lg border border-stone-200 bg-stone-50 text-sm focus:outline-none focus:ring-2 focus:ring-stone-900 resize-none"
+                    placeholder="Örn: Yağsız olsun, kuşbaşı doğransın..."
+                  />
+                </div>
+              </div>
+
+              {/* Alt Bilgi ve Ekle Butonu */}
+              <div className="p-6 bg-stone-50 border-t border-stone-200 mt-auto">
+                <div className="flex justify-between items-center mb-4">
+                  <div className="text-sm text-stone-500">
+                    Birim Fiyat: <span className="font-medium text-stone-900">{selectedProduct.price} ₺</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-sm text-stone-500 block">Toplam Tutar</span>
+                    <span className="text-2xl font-bold text-red-600">{calculatePrice()} ₺</span>
+                  </div>
+                </div>
+
+                <Button
+                  className="w-full bg-red-600 hover:bg-red-700 text-white h-14 text-lg rounded-xl shadow-lg shadow-red-200 transition-all active:scale-95"
+                  onClick={handleAddToCart}
+                >
+                  <ShoppingCart className="mr-2 h-5 w-5" />
+                  Sepete Ekle
+                </Button>
+              </div>
+            </div>
+          )}
+        </SheetContent>
+      </Sheet>
 
     </section>
   );
