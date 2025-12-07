@@ -1,10 +1,14 @@
+'use client'
+
 import Link from "next/link";
 import { ShoppingCart, Phone, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MobileNav from "./MobileNav";
-
+import { useCartStore } from "@/lib/store";
 
 export default function Header() {
+
+  const itemLenght = useCartStore((state) => state.items.length);
 
   const routes = [
     { href: '/', label: "Anasayfa" },
@@ -57,14 +61,17 @@ export default function Header() {
 
 
           {/* Sepet Butonu */}
-          <Button variant="outline" className="relative">
-            <ShoppingCart className="h-5 w-5 mr-1" />
-            <span className="font-semibold">Sepet</span>
-            {/* Sepet Sayacı (Mock Data) */}
-            <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
-              0
-            </span>
-          </Button>
+          <Link href={'/cart'}>
+            <Button variant="outline" className="relative">
+              <ShoppingCart className="h-5 w-5 mr-1" />
+              <span className="font-semibold">Sepet</span>
+              {/* Sepet Sayacı (Mock Data) */}
+              <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
+                {itemLenght}
+              </span>
+            </Button>
+          </Link>
+
         </div>
       </div>
     </header>
