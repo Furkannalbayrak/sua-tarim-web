@@ -5,9 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react";
 import Link from 'next/link';
 import { Product } from '@/types';
+import { useState } from 'react';
 
 export default function Cart() {
   const { items, removeItem, updateQuantity, clearCart, getCartTotal } = useCartStore();
+  const [customerName, setCustomerName] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [orderNote, setOrderNote] = useState<string>('');
+  // Hata durumlarını tutmak için state ekledik
+  const [errors, setErrors] = useState<{ name?: string; address?: string }>({});
 
   // Ürün Fiyatı Hesaplama
   const calculateItemPrice = (item: Product & { quantity: number }) => {
@@ -35,6 +41,52 @@ export default function Cart() {
       const newQuantity = Math.max(1, item.quantity - 1);
       updateQuantity(item.id, newQuantity);
     }
+  };
+
+  const handleCheckout = () => {
+    // Hata kontrolü
+    const newErrors: { name?: string; address?: string } = {};
+    let hasError = false;
+
+    if (!customerName.trim()) {
+      newErrors.name = 'Lütfen siparişinizi tamamlamak için adınızı ve soyadınızı giriniz.';
+      hasError = true;
+    }
+
+    if (!address.trim()) {
+      newErrors.address = 'Lütfen siparişinizi tamamlamak için teslimat adresinizi giriniz.';
+      hasError = true;
+    }
+
+    setErrors(newErrors);
+
+    if (hasError) {
+      return;
+    }
+
+    // TODO: Buraya işletmenin gerçek WhatsApp numarasını giriniz (başında 90 olacak şekilde)
+    const phoneNumber = '905437480205';
+
+    let message = `*Yeni Sipariş!* 🛍️\n\n`;
+    message += `👤 *Müşteri:* ${customerName}\n`;
+    message += `📍 *Adres:* ${address}\n`;
+    if (orderNote.trim()) {
+      message += `📝 *Not:* ${orderNote}\n`;
+    }
+    message += `\n*Sipariş Detayları:*\n`;
+
+    items.forEach(item => {
+      const quantityStr = item.unit === 'kg'
+        ? `${item.quantity}g`
+        : `${item.quantity} adet`;
+      const price = calculateItemPrice(item);
+      message += `▫️ ${item.name} - ${quantityStr} - ${price} ₺\n`;
+    });
+
+    message += `\n💰 *Toplam Tutar:* ${getCartTotal().toFixed(2)} ₺`;
+
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   if (items.length === 0) {
@@ -157,7 +209,69 @@ export default function Cart() {
               </div>
             </div>
 
-            <Button className="w-full bg-stone-900 hover:bg-stone-800 text-white h-14 text-lg rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+            {/* Müşteri Bilgileri */}
+            <div className="space-y-4 mb-6 pt-4 border-t border-stone-100">
+              <div>
+                <label htmlFor="customerName" className="block text-sm font-medium text-stone-700 mb-1">
+                  Adınız Soyadınız <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="customerName"
+                  value={customerName}
+                  onChange={(e) => {
+                    setCustomerName(e.target.value);
+                    if (errors.name) setErrors(prev => ({ ...prev, name: undefined }));
+                  }}
+                  className={`w-full px-4 py-2 rounded-lg border ${errors.name ? 'border-red-500 focus:ring-red-500' : 'border-stone-200 focus:ring-red-500'} focus:outline-none focus:ring-2 focus:border-transparent text-sm transition-colors`}
+                  placeholder="Adınız Soyadınız"
+                />
+                {errors.name && (
+                  <p className="text-red-500 text-xs mt-1 font-medium animate-in fade-in slide-in-from-top-1">
+                    {errors.name}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="address" className="block text-sm font-medium text-stone-700 mb-1">
+                  Teslimat Adresi <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="address"
+                  value={address}
+                  onChange={(e) => {
+                    setAddress(e.target.value);
+                    if (errors.address) setErrors(prev => ({ ...prev, address: undefined }));
+                  }}
+                  className={`w-full px-4 py-2 rounded-lg border ${errors.address ? 'border-red-500 focus:ring-red-500' : 'border-stone-200 focus:ring-red-500'} focus:outline-none focus:ring-2 focus:border-transparent resize-none h-24 text-sm transition-colors`}
+                  placeholder="Mahalle, Sokak, Bina No, Daire No, İlçe/İl"
+                />
+                {errors.address && (
+                  <p className="text-red-500 text-xs mt-1 font-medium animate-in fade-in slide-in-from-top-1">
+                    {errors.address}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="orderNote" className="block text-sm font-medium text-stone-700 mb-1">
+                  Sipariş Notu (Opsiyonel)
+                </label>
+                <textarea
+                  id="orderNote"
+                  value={orderNote}
+                  onChange={(e) => setOrderNote(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg border border-stone-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none h-20 text-sm"
+                  placeholder="Varsa özel istekleriniz..."
+                />
+              </div>
+            </div>
+
+            <Button
+              onClick={handleCheckout}
+              className="w-full bg-stone-900 hover:bg-stone-800 text-white h-14 text-lg rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
+            >
               <span>Siparişi Tamamla</span>
               <ArrowRight className="h-5 w-5" />
             </Button>
