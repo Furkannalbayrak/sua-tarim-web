@@ -4,6 +4,6 @@ export interface Product {
   description?: string;
   price: number;
   image: string;
-  category: string;
   unit: 'kg' | 'adet';
+  is_popular: boolean
 }
