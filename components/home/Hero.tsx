@@ -25,18 +25,6 @@ export default function Hero() {
                             <ArrowRight className="ml-2 h-5 w-5" />
                         </Button>
                     </Link>
-
-                    <Link href={'/#contact'}>
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            className="text-white border-white bg-transparent hover:bg-white hover:text-stone-900 text-base md:text-lg px-8 h-12 md:h-14 rounded-full"
-                        >
-                            <Phone className="mr-2 h-5 w-5" />
-                            Bizi Arayın
-                        </Button>
-                    </Link>
-
                 </div>
             </div>
         </section>
