@@ -1,11 +1,15 @@
 import About from "@/components/home/About";
 import Contact from "@/components/home/Contact";
 import Hero from "@/components/home/Hero";
-import PopularProducts from "@/components/home/PopularProducts";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Phone } from "lucide-react";
+import { getPopularProducts } from "@/services/productsService";
+import PopularProducts from "@/components/home/PopularProducts";
 
-export default function Home() {
+export default async function Home() {
+
+  const popularProducts = await getPopularProducts();
+
   return (
     <div className="flex flex-col min-h-screen">
 
@@ -13,7 +17,7 @@ export default function Home() {
       <Hero />
 
       {/* 2. Popüler Ürünler Vitrini */}
-      <PopularProducts />
+      <PopularProducts products={popularProducts} />
 
       {/* 3. Hakkımızda Özeti */}
       <About />
