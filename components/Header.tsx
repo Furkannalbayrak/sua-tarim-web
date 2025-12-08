@@ -49,17 +49,6 @@ export default function Header() {
         {/* Sağ Taraf: Telefon ve Sepet */}
         <div className="flex items-center gap-4">
 
-          <a
-            href="https://wa.me/905555555555"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden lg:flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-green-600 shadow-sm"
-          >
-            <MessageCircle className="h-4 w-4" />
-            <span>Bize Yazın</span>
-          </a>
-
-
           {/* Sepet Butonu */}
           <Link href={'/cart'}>
             <Button variant="outline" className="relative">
