@@ -12,6 +12,7 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function MobileNav() {
   const [open, setOpen] = useState<boolean>(false);
@@ -34,10 +35,20 @@ export default function MobileNav() {
       <SheetContent side="left" className="w-[300px] sm:w-[350px] flex flex-col bg-stone-50 border-r-stone-200">
         <SheetHeader className="text-left border-b border-stone-200 pb-6">
           <SheetTitle className="text-2xl font-extrabold tracking-tight text-stone-900 flex items-center gap-2">
-            <span className="bg-red-600 text-white px-2 py-1 rounded-lg text-lg">Sua</span>
-            Tarım
+
+            {/* Logo Güncellemesi Başlangıç */}
+            <div className="relative w-10 h-10">
+              <Image
+                src="/logo.jpeg"
+                alt="Şua Tarım Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <span>Şua Tarım</span>
+
           </SheetTitle>
-          <p className="text-sm text-stone-500 font-medium">Doğallığın ve Lezzetin Adresi</p>
+          <p className="text-sm text-stone-500 font-medium">Doğallığın ve Lezzetin Tek Adresi</p>
         </SheetHeader>
 
         <nav className="flex flex-col gap-2 flex-1">

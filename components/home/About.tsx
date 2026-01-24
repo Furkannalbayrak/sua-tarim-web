@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Clock, Leaf, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function About() {
@@ -11,16 +12,24 @@ export default function About() {
           {/* Sol Taraf: Resimler */}
           <div className="w-full md:w-1/2 relative">
             <div className="grid grid-cols-2 gap-4">
-              <img
-                src="https://images.unsplash.com/photo-1558030006-450675393462?q=80&w=1000&auto=format&fit=crop"
-                alt="Kasap Reyonu"
-                className="rounded-2xl shadow-lg w-full h-64 object-cover mt-8"
-              />
-              <img
-                src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?q=80&w=1000&auto=format&fit=crop"
-                alt="Taze Et"
-                className="rounded-2xl shadow-lg w-full h-64 object-cover"
-              />
+              <div className="relative w-full h-64 mt-8 rounded-2xl overflow-hidden shadow-lg">
+                <Image
+                  src="https://images.unsplash.com/photo-1558030006-450675393462?q=80&w=1000&auto=format&fit=crop"
+                  alt="Kasap Reyonu"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </div>
+              <div className="relative w-full h-64 rounded-2xl overflow-hidden shadow-lg">
+                <Image
+                  src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?q=80&w=1000&auto=format&fit=crop"
+                  alt="Taze Et"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </div>
             </div>
           </div>
 

@@ -11,6 +11,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useCartStore } from '@/lib/store';
+import { toast } from 'sonner';
+import Image from 'next/image';
 
 interface Props {
   products: Product[];
@@ -33,6 +35,17 @@ export default function ProductList({ products }: Props) {
   const handleAddToCart = () => {
     if (selectedProduct && quantity > 0) {
       addItem(selectedProduct, quantity);
+
+      // Bildirim Göster
+      const quantityText = selectedProduct.unit === 'kg'
+        ? `${quantity}g`
+        : `${quantity} adet`;
+
+      toast.success(`${selectedProduct.name} sepete eklendi`, {
+        description: `${quantityText} ürün sepetinizde.`,
+        duration: 3000,
+      });
+
       setSelectedProduct(null);
     }
   };
@@ -62,7 +75,7 @@ export default function ProductList({ products }: Props) {
   // YENİ EKLENEN FONKSİYON: Manuel giriş kontrolü
   const handleManualInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    
+
     // Negatif değer kontrolü
     if (val.includes('-')) return;
 
@@ -114,11 +127,15 @@ export default function ProductList({ products }: Props) {
               key={product.id}
               className="group relative h-[400px] w-full overflow-hidden rounded-2xl bg-stone-200 shadow-md hover:shadow-xl transition-all duration-500"
             >
-              <img
-                src={product.image}
-                alt={product.name}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
 
               <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-0 group-hover:-translate-y-2 transition-transform duration-300">
@@ -155,10 +172,11 @@ export default function ProductList({ products }: Props) {
           {selectedProduct && (
             <div className="flex flex-col h-full">
               <div className="relative h-64 w-full shrink-0">
-                <img
+                <Image
                   src={selectedProduct.image}
                   alt={selectedProduct.name}
-                  className="h-full w-full object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
@@ -220,7 +238,7 @@ export default function ProductList({ products }: Props) {
                     <Button variant="ghost" size="icon" onClick={decrementQuantity} className="h-12 w-12 rounded-lg hover:bg-white hover:shadow-sm">
                       <Minus className="h-5 w-5 text-stone-600" />
                     </Button>
-                    
+
                     {/* GÜNCELLENEN KISIM: Input Alanı */}
                     <div className="flex flex-col items-center justify-center w-full px-2">
                       <div className="flex items-baseline justify-center gap-1">
@@ -229,10 +247,10 @@ export default function ProductList({ products }: Props) {
                           min="0"
                           step={selectedProduct.unit === 'kg' ? "0.1" : "1"}
                           value={
-                            quantity === 0 ? '' : 
-                            selectedProduct.unit === 'kg' 
-                              ? (quantity / 1000).toString() // Gramı KG'ye çevirip göster
-                              : quantity.toString()
+                            quantity === 0 ? '' :
+                              selectedProduct.unit === 'kg'
+                                ? (quantity / 1000).toString() // Gramı KG'ye çevirip göster
+                                : quantity.toString()
                           }
                           onChange={handleManualInput}
                           className="w-24 text-center text-2xl font-bold text-stone-900 bg-transparent border-b border-stone-300 focus:border-stone-900 focus:outline-none p-0 appearance-none"
