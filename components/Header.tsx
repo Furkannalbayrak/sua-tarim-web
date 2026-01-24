@@ -5,6 +5,7 @@ import { ShoppingCart, Phone, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MobileNav from "./MobileNav";
 import { useCartStore } from "@/lib/store";
+import Image from "next/image";
 
 export default function Header() {
 
@@ -26,10 +27,19 @@ export default function Header() {
         </div>
 
         {/* Logo / Dükkan Adı */}
-        <Link href="/" className="flex items-center space-x-2">
-          <span className="text-2xl font-bold tracking-tight text-stone-900">
-            🥩 Şua Tarım
-          </span>
+        <Link href="/" className="flex items-center gap-2">
+           <div className="relative w-12 h-12">
+              <Image 
+                src="/logo.jpeg" 
+                alt="Şua Tarım Logo" 
+                fill 
+                className="object-contain"
+              />
+           </div>
+           {/* İsterseniz yanında yazı da kalsın, istemezseniz silin */}
+           <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent hidden sm:block">
+             Şua Tarım
+           </span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8">
