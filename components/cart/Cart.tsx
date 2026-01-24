@@ -2,10 +2,12 @@
 
 import { useCartStore } from '@/lib/store';
 import { Button } from "@/components/ui/button";
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react";
+import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, CheckCircle } from "lucide-react";
 import Link from 'next/link';
 import { Product } from '@/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import Image from 'next/image';
 
 export default function Cart() {
   const { items, removeItem, updateQuantity, clearCart, getCartTotal } = useCartStore();
@@ -14,6 +16,7 @@ export default function Cart() {
   const [orderNote, setOrderNote] = useState<string>('');
   // Hata durumlarını tutmak için state ekledik
   const [errors, setErrors] = useState<{ name?: string; address?: string }>({});
+  const [isSuccess, setIsSuccess] = useState(false);
 
   // Ürün Fiyatı Hesaplama
   const calculateItemPrice = (item: Product & { quantity: number }) => {
@@ -43,8 +46,23 @@ export default function Cart() {
     }
   };
 
+  // Sayfa yüklendiğinde kayıtlı bilgileri getir
+  useEffect(() => {
+    const savedName = localStorage.getItem('customerName');
+    const savedAddress = localStorage.getItem('customerAddress');
+
+    if (savedName) setCustomerName(savedName);
+    if (savedAddress) setAddress(savedAddress);
+  }, []);
+
+
   const handleCheckout = () => {
     // Hata kontrolü
+    if (getCartTotal() < 1000) {
+      alert("Sipariş verebilmek için sepet tutarı en az 1000 TL olmalıdır.");
+      return;
+    }
+
     const newErrors: { name?: string; address?: string } = {};
     let hasError = false;
 
@@ -64,8 +82,11 @@ export default function Cart() {
       return;
     }
 
+    localStorage.setItem('customerName', customerName);
+    localStorage.setItem('customerAddress', address);
+
     // TODO: Buraya işletmenin gerçek WhatsApp numarasını giriniz (başında 90 olacak şekilde)
-    const phoneNumber = '905437480205';
+    const phoneNumber = '905516284874';
 
     let message = `*Yeni Sipariş!* 🛍️\n\n`;
     message += `👤 *Müşteri:* ${customerName}\n`;
@@ -87,7 +108,44 @@ export default function Cart() {
 
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
+
+    clearCart();
+    setIsSuccess(true);
+
+    setCustomerName('');
+    setAddress('');
+    setOrderNote('');
   };
+
+  if (isSuccess) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 animate-in fade-in slide-in-from-bottom-4">
+        <div className="bg-green-100 p-6 rounded-full mb-6">
+          <CheckCircle className="w-20 h-20 text-green-600" />
+        </div>
+
+        <h2 className="text-3xl font-bold text-stone-900 mb-4">İşlem Tamamlanmak Üzere!</h2>
+
+        <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-xl max-w-md mb-8">
+          <p className="text-stone-800 font-medium text-lg">
+            Sipariş detaylarınızı WhatsApp uygulamasına aktardık.
+          </p>
+          <p className="text-stone-600 mt-2 text-sm">
+            Lütfen açılan WhatsApp penceresinde <span className="font-bold text-black">"Gönder"</span> tuşuna basarak siparişinizi onaylamayı unutmayınız. Eğer WhatsAppdaki "Gönder" tuşuna basmazsanız siparişiniz onaylanamaz.
+          </p>
+        </div>
+
+        <div className="flex gap-4">
+          <button
+            onClick={() => setIsSuccess(false)} // Tekrar alışverişe dön
+            className="text-stone-500 hover:text-stone-800 font-medium"
+          >
+            Ana Sayfaya Dön
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -120,8 +178,14 @@ export default function Cart() {
           {items.map((item) => (
             <div key={item.id} className="flex flex-col sm:flex-row items-center gap-6 bg-white p-4 rounded-2xl shadow-sm border border-stone-100">
               {/* Ürün Resmi */}
-              <div className="w-full sm:w-32 h-32 shrink-0 rounded-xl overflow-hidden bg-stone-100">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+              <div className="relative w-full sm:w-32 h-32 shrink-0 rounded-xl overflow-hidden bg-stone-100">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 128px"
+                />
               </div>
 
               {/* Ürün Bilgileri */}
@@ -166,7 +230,13 @@ export default function Cart() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => {
+                        removeItem(item.id);
+                        toast.error("Ürün Sepetten Silindi", {
+                          description: `${item.name} sepetinizden kaldırıldı.`,
+                          duration: 3000,
+                        });
+                      }}
                       className="text-stone-400 hover:text-red-600 hover:bg-red-50"
                     >
                       <Trash2 className="h-5 w-5" />
@@ -181,7 +251,15 @@ export default function Cart() {
             <Button
               variant="outline"
               className="border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 hover:border-red-300 px-8 gap-2 transition-colors"
-              onClick={clearCart}
+              onClick={() => {
+                if (confirm('Sepetinizdeki tüm ürünleri silmek istediğinize emin misiniz?')) {
+                  clearCart();
+                  toast.error("Sepet Temizlendi", {
+                    description: "Sepetinizdeki tüm ürünler başarıyla silindi.",
+                    duration: 3000,
+                  });
+                }
+              }}
             >
               <Trash2 className="w-4 h-4" />
               Sepeti Temizle
