@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Phone } from "lucide-react";
 import { getPopularProducts } from "@/services/productsService";
 import PopularProducts from "@/components/home/PopularProducts";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Şua Tarım | Doğal, Taze ve Lezzetli Et Ürünleri",
+  description: "Şua Tarım güvencesiyle en kaliteli dana, kuzu kıyma ve kuşbaşı çeşitleri kapınızda. Hemen online sipariş verin, lezzeti keşfedin.",
+};
 
 export default async function Home() {
 
@@ -21,9 +27,6 @@ export default async function Home() {
 
       {/* 3. Hakkımızda Özeti */}
       <About />
-
-      {/* 4. İletişim Bilgileri */}
-      <Contact />
 
     </div>
   );
