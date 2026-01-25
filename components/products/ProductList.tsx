@@ -105,7 +105,7 @@ export default function ProductList({ products }: Props) {
   };
 
   return (
-    <section className="py-12 bg-stone-50 min-h-screen">
+    <section className="py-12 pb-20 bg-stone-50 min-h-screen">
       <div className="container mx-auto px-6 md:px-10 max-w-7xl">
 
         {/* Başlık ve Filtre Alanı */}
