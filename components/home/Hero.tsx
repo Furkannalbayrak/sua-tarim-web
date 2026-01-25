@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Phone, ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Hero() {
@@ -8,10 +9,16 @@ export default function Hero() {
 
             {/* Arka Plan Resmi (Şimdilik renk kullanıyoruz, sonra foto koyarız) */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent z-10" />
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-60" />
-
+            <Image
+                src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?q=80&w=2070&auto=format&fit=crop"
+                alt="Taze Etler ve Kasap Reyonu"
+                fill
+                sizes="100vw"
+                className="object-cover opacity-70"
+                priority 
+            />
             <div className="max-w-7xl w-full mx-auto px-6 md:px-10 relative z-20 text-center sm:text-left">
-                <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+                <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
                     Sofranız İçin <br />
                     <span className="text-red-500">En Taze Etler</span>
                 </h1>

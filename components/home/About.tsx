@@ -23,7 +23,7 @@ export default function About() {
               </div>
               <div className="relative w-full h-64 rounded-2xl overflow-hidden shadow-lg">
                 <Image
-                  src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?q=80&w=1000&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1690983322025-aab4f95a0269?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="Taze Et"
                   fill
                   className="object-cover"
