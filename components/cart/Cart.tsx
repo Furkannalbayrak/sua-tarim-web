@@ -2,7 +2,7 @@
 
 import { useCartStore } from '@/lib/store';
 import { Button } from "@/components/ui/button";
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, CheckCircle } from "lucide-react";
+import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, CheckCircle, Truck, CreditCard } from "lucide-react";
 import Link from 'next/link';
 import { Product } from '@/types';
 import { useEffect, useState } from 'react';
@@ -55,6 +55,11 @@ export default function Cart() {
     if (savedAddress) setAddress(savedAddress);
   }, []);
 
+  useEffect(() => {
+    if (isSuccess) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [isSuccess]);
 
   const handleCheckout = () => {
     // Hata kontrolü
@@ -86,7 +91,7 @@ export default function Cart() {
     localStorage.setItem('customerAddress', address);
 
     // TODO: Buraya işletmenin gerçek WhatsApp numarasını giriniz (başında 90 olacak şekilde)
-    const phoneNumber = '905516284874';
+    const phoneNumber = '905510973400';
 
     let message = `*Yeni Sipariş!* 🛍️\n\n`;
     message += `👤 *Müşteri:* ${customerName}\n`;
@@ -106,7 +111,7 @@ export default function Cart() {
 
     message += `\n💰 *Toplam Tutar:* ${getCartTotal().toFixed(2)} ₺`;
 
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 
     clearCart();
@@ -131,7 +136,7 @@ export default function Cart() {
             Sipariş detaylarınızı WhatsApp uygulamasına aktardık.
           </p>
           <p className="text-stone-600 mt-2 text-sm">
-            Lütfen açılan WhatsApp penceresinde <span className="font-bold text-black">"Gönder"</span> tuşuna basarak siparişinizi onaylamayı unutmayınız. Eğer WhatsAppdaki "Gönder" tuşuna basmazsanız siparişiniz onaylanamaz.
+            Lütfen açılan WhatsApp penceresinde <span className="font-bold text-black">"Gönder"</span> tuşuna basarak siparişinizi onaylamayı unutmayınız. Eğer WhatsAppdaki <span className="font-bold text-black">"Gönder"</span> tuşuna basmazsanız siparişiniz onaylanamaz.
           </p>
         </div>
 
@@ -167,7 +172,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="container mx-auto px-6 py-12 max-w-6xl">
+    <div className="container mx-auto px-6 sm:py-12 py-8 max-w-6xl">
       <h1 className="text-3xl font-bold text-stone-900 mb-8 flex items-center gap-3">
         Sepetim <span className="text-stone-600 text-lg font-normal">({items.length} Ürün)</span>
       </h1>
@@ -343,6 +348,24 @@ export default function Cart() {
                   className="w-full px-4 py-2 rounded-lg border border-stone-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none h-20 text-sm"
                   placeholder="Varsa özel istekleriniz..."
                 />
+              </div>
+            </div>
+
+            {/* Bilgilendirme Kutusu */}
+            <div className="bg-blue-50/50 p-4 rounded-xl mb-6 border border-blue-100">
+              <div className="flex gap-3 mb-4 pb-4 border-b border-blue-100">
+                <Truck className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                <div className="space-y-2 text-sm text-stone-700">
+                  <p><span className="font-bold text-stone-900">Avrupa Yakası:</span> Perşembe günü adresinize teslim edilir.</p>
+                  <p><span className="font-bold text-stone-900">Anadolu Yakası:</span> Cuma ve Cumartesi günü adresinize teslim edilir.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3 items-start text-sm text-stone-700">
+                <CreditCard className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                <p>
+                  Sipariş kapınıza geldiğinde ödemenizi <span className="font-bold text-stone-900">banka kartı, kredi kartı</span> ya da <span className="font-bold text-stone-900">nakit</span> olarak ödeyebilirsiniz.
+                </p>
               </div>
             </div>
 
