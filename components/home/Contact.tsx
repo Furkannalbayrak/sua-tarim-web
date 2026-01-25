@@ -6,7 +6,7 @@ export default function Contact() {
     <section id="contact" className="py-20 px-2 bg-stone-900 text-white">
       <div className="container mx-auto px-4 md:px-10 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          
+
           {/* İletişim Bilgileri */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -23,7 +23,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-xl mb-1">Adresimiz</h3>
-                  <p className="text-stone-300">Örnek Mahallesi, Kasaplar Caddesi No: 123<br />Merkez / Şehir</p>
+                  <p className="text-stone-300">Kavacık, Dağlı Sk. No:4, 34810<br />Beykoz / İstanbul</p>
                 </div>
               </div>
 
@@ -33,7 +33,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-xl mb-1">Telefon & WhatsApp</h3>
-                  <p className="text-stone-300">+90 555 555 55 55</p>
+                  <p className="text-stone-300">+90 551 097 34 00</p>
                 </div>
               </div>
 
@@ -43,21 +43,25 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-xl mb-1">Çalışma Saatleri</h3>
-                  <p className="text-stone-300">Haftanın Her Günü: 08:00 - 20:00</p>
+                  <p className="text-stone-300">Pazar Günü Hariç Haftanın Her Günü: 08:00 - 18:00</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Harita veya Görsel */}
-          <div className="h-[400px] bg-stone-800 rounded-2xl overflow-hidden relative">
-             {/* Buraya Google Maps iframe'i gelebilir. Şimdilik görsel koyuyoruz. */}
-             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1551028150-64b9f398f678?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-50" />
-             <div className="absolute inset-0 flex items-center justify-center">
-                <Button size="lg" className="bg-white text-stone-900 hover:bg-stone-200">
-                    Haritada Göster
-                </Button>
-             </div>
+          {/* --- HARİTA BÖLÜMÜ (Burayı değiştirdik) --- */}
+          <div className="h-[400px] bg-stone-800 rounded-2xl overflow-hidden shadow-xl border border-stone-700">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3007.057787856521!2d29.079188099999993!3d41.089583999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cacbf6f039ef79%3A0x40625726a771060d!2zxZ51YSBUYXLEsW0gw4dpZnRsacSfaQ!5e0!3m2!1str!2str!4v1769335922996!5m2!1str!2str"
+              title="Şua Tarım Çiftliği Konum Haritası"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full h-full"
+            ></iframe>
           </div>
 
         </div>
