@@ -20,34 +20,37 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-stone-100 bg-white/80 backdrop-blur-md">
-      <div className="flex h-16 items-center w-full justify-between mx-auto px-4 md:px-10 max-w-7xl">
+      <div className="relative flex h-16 items-center w-full justify-between mx-auto px-4 md:px-10 max-w-7xl">
 
         <div className="lg:hidden">
           <MobileNav />
         </div>
 
         {/* Logo / Dükkan Adı */}
-        <Link href="/" className="flex items-center gap-2">
-           <div className="relative w-12 h-12">
-              <Image 
-                src="/logo.jpeg" 
-                alt="Şua Tarım Logo" 
-                fill 
-                className="object-contain"
-              />
-           </div>
-           {/* İsterseniz yanında yazı da kalsın, istemezseniz silin */}
-           <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent hidden sm:block">
-             Şua Tarım
-           </span>
+        <Link
+          href="/"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:transform-none lg:translate-x-0 lg:translate-y-0 flex items-center gap-2"
+        >
+          <div className="relative w-12 h-12">
+            <Image
+              src="/logo.jpeg"
+              alt="Şua Tarım Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+          {/* İsterseniz yanında yazı da kalsın, istemezseniz silin */}
+          <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent hidden sm:block">
+            Şua Tarım
+          </span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-10">
           {routes.map((route) => (
             <Link
               key={route.href}
               href={route.href}
-              className="group relative text-base font-medium text-stone-600 transition-colors hover:text-red-700"
+              className="group relative text-lg font-medium text-stone-600 transition-colors hover:text-red-700"
             >
               {route.label}
               {/* Animasyonlu Çizgi */}
