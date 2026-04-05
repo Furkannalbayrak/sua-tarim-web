@@ -91,7 +91,7 @@ export default function Cart() {
     localStorage.setItem('customerAddress', address);
 
     // TODO: Buraya işletmenin gerçek WhatsApp numarasını giriniz (başında 90 olacak şekilde)
-    const phoneNumber = '905510973400';
+    const phoneNumber = '905437480205';
 
     let message = `*Yeni Sipariş!* 🛍️\n\n`;
     message += `👤 *Müşteri:* ${customerName}\n`;
