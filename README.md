@@ -1,11 +1,13 @@
 # 🌾 Şua Tarım - E-Ticaret Platformu
 
+🌍 **Canlı Site:** [https://www.suatarim.com/](https://www.suatarim.com/)
+
 ![Next.js](https://img.shields.io/badge/Next.js-16.0-black?style=for-the-badge&logo=next.js)
 ![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-Bear-brown?style=for-the-badge)
+![Zustand](https://img.shields.io/badge/Zustand-brown?style=for-the-badge)
 
 **Şua Tarım**, müşterilerine en taze ve doğal et ürünlerini (dana, kuzu kıyma, kuşbaşı vb.) ulaştırmayı hedefleyen modern bir e-ticaret web uygulamasıdır. Kullanıcı dostu arayüzü, hızlı yapısı ve güvenilir altyapısı ile online sipariş süreçlerini kolaylaştırmak için tasarlanmıştır.
 
