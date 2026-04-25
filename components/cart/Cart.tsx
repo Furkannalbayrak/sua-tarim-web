@@ -379,7 +379,8 @@ export default function Cart() {
             </Button>
 
             <p className="text-base text-stone-600 text-center mt-4">
-              Siparişiniz WhatsApp üzerinden iletilecektir.
+              {/* Siparişiniz WhatsApp üzerinden iletilecektir. */}
+              Siparişlerinizi +90 551 097 34 00 bu numara üzerinden verebilirsiniz.
             </p>
           </div>
         </div>
