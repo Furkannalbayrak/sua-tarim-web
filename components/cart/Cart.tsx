@@ -370,10 +370,11 @@ export default function Cart() {
             </div>
 
             <Button
-              onClick={handleCheckout}
+              // onClick={handleCheckout}
               className="w-full bg-stone-900 hover:bg-stone-800 text-white h-14 text-lg rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
             >
-              <span>Siparişi Tamamla</span>
+              <span>Yakında Hizmetinizde</span>
+              {/* <span>Siparişi Tamamla</span> */}
               <ArrowRight className="h-5 w-5" />
             </Button>
 
